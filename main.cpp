@@ -82,7 +82,14 @@ public:
     explicit ConnectedSocket(int sd) : Socket(sd) {}
 
     void Write(const std::string &str) {
-        send(sd_, str.c_str(), str.size(), 0);
+        const int strlen = str.length();
+        char buff[strlen];
+        for (size_t i = 0; i < strlen; i++) {
+            buff[i] = str[i];
+        }
+        if (send(sd_, buff, strlen, 0) < 0) {
+            std::cout << "Can't write in ConnectedSocket" << std::endl;
+        }
     }
 
     void Write(const std::vector<uint8_t> &bytes) {
