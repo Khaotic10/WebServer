@@ -1,5 +1,5 @@
 #include <iostream>
-#include "server/server.h"
+#include "src/server/server.h"
 
 int main() {
     std::cout << CLEAR_SCREEN;
