@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <iostream>
 #include <sys/fcntl.h>
+#include <utility>
 #include <vector>
 #include <cstdlib>
 #include <sys/types.h>
@@ -15,41 +16,47 @@
 #include <string>
 #include <sys/stat.h>
 #include <fcntl.h>
-
 #include "../server/server.h"
 
 class ClientSocket : public ConnectedSocket {
 public:
-    void Connect(const SocketAdress &serverAddr) ;
+    void Connect(const SocketAdress &serverAddr);
 };
 
 class HttpHeader {
-    std::string name_;
-    std::string value_;
+    std::string name;
+    std::string value;
 public:
     HttpHeader() = default;
-    HttpHeader(const std::string& n, const std::string& v) : name_(n), value_(v) {};
-    HttpHeader(const HttpHeader& copy);
+
+    HttpHeader(std::string n, std::string v) : name(std::move(n)), value(std::move(v)) {};
+
+    HttpHeader(const HttpHeader &copy);
+
     std::string UnionString() const;
-    static HttpHeader ParseHeader(const std::string& line);
+
+    static HttpHeader ParseHeader(const std::string &line);
 };
 
 class HttpRequest {
     std::vector<std::string> lines_;
 public:
     HttpRequest();
+
     std::string UnionString() const;
 };
 
 class HttpResponse {
     HttpHeader response;
-    HttpHeader* other;
+    HttpHeader *other;
     std::string body;
     int len;
 public:
     HttpResponse(std::vector<std::string> lines);
-    void Print() const;
+
     ~HttpResponse();
+
+    void Print() const;
 };
 
 void ClientConnection();

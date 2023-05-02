@@ -12,12 +12,12 @@ void ClientSocket::Connect(const SocketAdress &serverAddr) {
 //class HttpHeader
 
 HttpHeader::HttpHeader(const HttpHeader &copy) {
-    name_ = copy.name_;
-    value_ = copy.value_;
+    name = copy.name;
+    value = copy.value;
 }
 
 std::string HttpHeader::UnionString() const {
-    std::string temp = name_ + " " + value_;
+    std::string temp = name + " " + value;
     return temp;
 }
 
